@@ -7,7 +7,9 @@ Build And Run Test Cases
 2) Checkout the Project source <br/>
      + c:\technical_test>gradle build <br/>
      + c:\technical_test>gradle test  <br/>
-3)Test output can be found in: <br/>
+     
+     
+3) Test output can be found in: <br/>
 /build/reports/tests/test/index.html will output the test results.
 
 
