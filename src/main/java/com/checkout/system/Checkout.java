@@ -1,56 +1,68 @@
 package com.checkout.system;
 
 
-import com.checkout.system.rules.PricingRules;
+import com.checkout.system.rules.PricingRulesBO;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is the implementation of the Checkout Interface
+ */
 public class Checkout {
 
-    private PricingRules pricingRules;
-    private Map<String, ItemSummary> itemTotalsMap;
+    private PricingRulesBO pricingRulesBO;
+    private Map<String, ItemSummary> checkoutItems;
 
 
     private Checkout(){
-        // Intialize always with Pricing Rules
+        // Enforce - Intialize always with Pricing Rules
     }
 
-    private Checkout(PricingRules pricingRules) {
-        this.pricingRules = pricingRules;
-        itemTotalsMap = new HashMap<>();
+    private Checkout(PricingRulesBO pricingRulesBO) {
+        this.pricingRulesBO = pricingRulesBO;
+        checkoutItems = new HashMap<>();
 
     }
 
 
-    public static Checkout init(PricingRules pricingRules){
+    public static Checkout init(PricingRulesBO pricingRules){
         Checkout checkout = new Checkout(pricingRules);
         return checkout;
     }
 
+    /**
+     * During Scan - Takes In ItemCode, and Price, and stores it into the internal checkoutItems
+     * @param itemCode
+     * @param price
+     */
     public void scan(String itemCode, BigDecimal price){
-        ItemSummary total = itemTotalsMap.get(itemCode);
+        ItemSummary total = checkoutItems.get(itemCode);
         if(total == null){
             ItemSummary checkoutItemTotal = new ItemSummary(price);
-            itemTotalsMap.put(itemCode,checkoutItemTotal);
+            checkoutItems.put(itemCode,checkoutItemTotal);
         }else{
             total.addPrice(price);
         }
     }
 
+    /**
+     * Calculates the Final Total of the CheckoutItems, having applied the PricingRules
+     * @return total
+     */
     public BigDecimal total(){
-        pricingRules.applyPricingRules(itemTotalsMap);
+        pricingRulesBO.applyPricingRules(checkoutItems);
         return calculateTotalPrice();
     }
 
     private BigDecimal calculateTotalPrice(){
-        BigDecimal fullTotal = new BigDecimal(0.00);
+        BigDecimal fullTotal = BigDecimal.ZERO;
 
-        for(Map.Entry<String, ItemSummary> entry : itemTotalsMap.entrySet()){
+        for(Map.Entry<String, ItemSummary> entry : checkoutItems.entrySet()){
             fullTotal = fullTotal.add(entry.getValue().getTotal());
         }
-        fullTotal = fullTotal.setScale(2,BigDecimal.ROUND_CEILING);
+        fullTotal = fullTotal.setScale(2,BigDecimal.ROUND_HALF_UP);
         return fullTotal;
     }
 

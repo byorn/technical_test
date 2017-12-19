@@ -2,25 +2,36 @@ package com.checkout.system.rules;
 
 import java.math.BigDecimal;
 
+/**
+ * Class is used to Define a Pricing Rule
+ */
 public class PricingRule {
 
-    public enum DiscountApply{
-        FOR_TOTAL,PER_ITEM
-    }
+
+
     private String itemCode;
     private BigDecimal discount;
-    private DiscountApply discountApply;
-
-    public DiscountApply getDiscountApply() {
-        return discountApply;
-    }
-
-    public void setDiscountApply(DiscountApply discountApply) {
-        this.discountApply = discountApply;
-    }
+    private PricingRuleConstants.DiscountApplyTo discountApplyTo;
+    private PricingRuleConstants.ApplyCondition  applyCondition;
 
     private BigDecimal priceThreshold;
+    private String otherExistingItemCode;
 
+    public PricingRuleConstants.DiscountApplyTo getDiscountApplyTo() {
+        return discountApplyTo;
+    }
+
+    public void setDiscountApplyTo(PricingRuleConstants.DiscountApplyTo discountApplyTo) {
+        this.discountApplyTo = discountApplyTo;
+    }
+
+    public PricingRuleConstants.ApplyCondition getApplyCondition() {
+        return applyCondition;
+    }
+
+    public void setApplyCondition(PricingRuleConstants.ApplyCondition applyCondition) {
+        this.applyCondition = applyCondition;
+    }
 
     public String getItemCode() {
         return itemCode;
@@ -44,5 +55,13 @@ public class PricingRule {
 
     public void setPriceThreshold(BigDecimal priceThreshold) {
         this.priceThreshold = priceThreshold;
+    }
+
+    public String getOtherExistingItemCode() {
+        return otherExistingItemCode;
+    }
+
+    public void setOtherExistingItemCode(String otherExistingItemCode) {
+        this.otherExistingItemCode = otherExistingItemCode;
     }
 }
