@@ -1,15 +1,13 @@
 Technical Test for: https://gist.github.com/codingricky/2913880
 --------------------------------------------------------------------
 
-Prerequisites
------------------------------
-Install Java 8, and Gradle
-
-How To Execute the Test Cases
+Build And Run Test Cases
 ------------------------------
-gradle build
-gradle test
-
+1) Prerequisite: Java 8, and Gradle Install
+2) Checkout the Project source 
+  2.1) c:\project>gradle build
+  2.2) c:\project>gradle test
+3)Test output can be found in: 
 /build/reports/tests/test/index.html will output the test results.
 
 
