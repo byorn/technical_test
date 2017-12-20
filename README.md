@@ -59,4 +59,7 @@ FREE_ITEM - When The scanned item belongs to this pricing rule the discount  (i,
 
 Futher Improvemants
 -------------------------------------------------------------
-The PricingRule class can be further simplified, with inheritance and using Strategy Design Pattern (using interfaces)
+ - The PricingRule class can be further simplified, with inheritance and using Strategy Design Pattern (using interfaces)
+ - Can Write further failing Test cases to for PricingRulesBO class.<br/>
+        Example:
+        If Two Similar Pricing Rules are Added, will it discount the total price twice, or will an error need to be handled.

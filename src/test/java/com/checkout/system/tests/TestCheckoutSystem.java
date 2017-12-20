@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 
 /**
- * This Test Suite, focuses on the Checkout total for the items that have been scanned.
+ * This Test Suite, focuses on the Checkout.java  total() method
  *
  */
 @RunWith(SpringRunner.class)
