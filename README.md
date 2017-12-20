@@ -47,9 +47,11 @@ There are two types of PricingRules
 2) FREE_ITEM
 
 EXCEEDS_THRESHOLD - When the total price  of an individual scanned item exceeds the configured pricing rule threshold amount, then apply the discount
-to
-        a) To the Full item price total
-        b) To each individual item's price
+to <br/>
+<ul>
+        <li> To the Full item price total </li>
+       <li> To each individual item's price</li>
+</ul>
 
 
 FREE_ITEM - When The scanned item belongs to this pricing rule the discount  (i,e. should be the full price of the item) will be applied  if another item (configured) is existing
