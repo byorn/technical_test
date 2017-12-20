@@ -25,18 +25,14 @@ public class PricingRulesBO {
         pricingRuleList.forEach(pricingRule -> {
 
                 ScannedItemSummary scannedItemSummary = checkoutItems.get(pricingRule.getItemCode());
+
                 if(scannedItemSummary != null ){
 
                     if(pricingRule.getApplyCondition().equals(PricingRuleConstants.ApplyCondition.EXCEEDS_THRESHOLD)) {
-
                         if (itemTotalExceedsPricingRuleThreshold(scannedItemSummary,pricingRule)) {
-
                             if (pricingRuleDiscountToBeAppliedToTheItemTotal(pricingRule)) {
-
                                 scannedItemSummary.reducePrice(pricingRule.getDiscount());
-
-                            } else {
-
+                           } else {
                                 BigDecimal priceToReduce = BigDecimal.valueOf(pricingRule.getDiscount().doubleValue() * scannedItemSummary.getNumberOfItems());
                                 scannedItemSummary.reducePrice(priceToReduce);
                             }
