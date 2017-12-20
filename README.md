@@ -34,10 +34,11 @@ The reason I state this is because: For the mentioned scenario:
 "we will bundle in a free VGA adapter free of charge with every MacBook Pro sold"
 
 When a Macbook Pro is scanned, bundling the free VGA adapter may not require the VGA Adapter to be scanned as well.
-a ) If the VGA Adapter was scanned, it will be free
-b ) If the VGA Adapter was not scanned - Total not effected, and checkout items will not be affected
-c ) If an additional VGA Adapter is scanned..eg. 1 MBP and 2 VGA, then the additional VGA will be charged.
-
+<ol>
+<li> If the VGA Adapter was scanned, it will be free</li>
+<li>If the VGA Adapter was not scanned - Total not effected, and checkout items will not be affected</li>
+<li> If an additional VGA Adapter is scanned..eg. 1 MBP and 2 VGA, then the additional VGA will be charged.</li>
+</ol>
 
 Pricing Rule Defined
 -------------------------------------------------------
