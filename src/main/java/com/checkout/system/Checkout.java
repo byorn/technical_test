@@ -13,7 +13,7 @@ import java.util.Map;
 public class Checkout {
 
     private PricingRulesBO pricingRulesBO;
-    private Map<String, ItemSummary> checkoutItems;
+    private Map<String, ScannedItemSummary> checkoutItems;
 
 
     private Checkout(){
@@ -32,25 +32,18 @@ public class Checkout {
         return checkout;
     }
 
-    /**
-     * During Scan - Takes In ItemCode, and Price, and stores it into the internal checkoutItems
-     * @param itemCode
-     * @param price
-     */
+
     public void scan(String itemCode, BigDecimal price){
-        ItemSummary total = checkoutItems.get(itemCode);
+        ScannedItemSummary total = checkoutItems.get(itemCode);
         if(total == null){
-            ItemSummary checkoutItemTotal = new ItemSummary(price);
+            ScannedItemSummary checkoutItemTotal = new ScannedItemSummary(price);
             checkoutItems.put(itemCode,checkoutItemTotal);
         }else{
             total.addPrice(price);
         }
     }
 
-    /**
-     * Calculates the Final Total of the CheckoutItems, having applied the PricingRules
-     * @return total
-     */
+
     public BigDecimal total(){
         pricingRulesBO.applyPricingRules(checkoutItems);
         return calculateTotalPrice();
@@ -59,8 +52,8 @@ public class Checkout {
     private BigDecimal calculateTotalPrice(){
         BigDecimal fullTotal = BigDecimal.ZERO;
 
-        for(Map.Entry<String, ItemSummary> entry : checkoutItems.entrySet()){
-            fullTotal = fullTotal.add(entry.getValue().getTotal());
+        for(Map.Entry<String, ScannedItemSummary> entry : checkoutItems.entrySet()){
+            fullTotal = fullTotal.add(entry.getValue().getPriceTotal());
         }
         fullTotal = fullTotal.setScale(2,BigDecimal.ROUND_HALF_UP);
         return fullTotal;

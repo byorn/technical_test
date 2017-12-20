@@ -1,6 +1,6 @@
 package com.checkout.system.rules;
 
-import com.checkout.system.ItemSummary;
+import com.checkout.system.ScannedItemSummary;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,38 +20,52 @@ public class PricingRulesBO {
         pricingRuleList.add(pricingRule);
     }
 
-    public void applyPricingRules(Map<String, ItemSummary> checkoutItems){
+    public void applyPricingRules(Map<String, ScannedItemSummary> checkoutItems){
 
         pricingRuleList.forEach(pricingRule -> {
 
-                ItemSummary itemSummary = checkoutItems.get(pricingRule.getItemCode());
-                if(itemSummary != null ){
+                ScannedItemSummary scannedItemSummary = checkoutItems.get(pricingRule.getItemCode());
+                if(scannedItemSummary != null ){
+
                     if(pricingRule.getApplyCondition().equals(PricingRuleConstants.ApplyCondition.EXCEEDS_THRESHOLD)) {
 
-                        if (itemSummary.getTotal().compareTo(pricingRule.getPriceThreshold()) >= 0) {
-                            if (pricingRule.getDiscountApplyTo().equals(PricingRuleConstants.DiscountApplyTo.FOR_TOTAL)) {
-                                itemSummary.reducePrice(pricingRule.getDiscount());
+                        if (itemTotalExceedsPricingRuleThreshold(scannedItemSummary,pricingRule)) {
+
+                            if (pricingRuleDiscountToBeAppliedToTheItemTotal(pricingRule)) {
+
+                                scannedItemSummary.reducePrice(pricingRule.getDiscount());
+
                             } else {
-                                BigDecimal priceToReduce = BigDecimal.valueOf(pricingRule.getDiscount().doubleValue() * itemSummary.getCount());
-                                itemSummary.reducePrice(priceToReduce);
+
+                                BigDecimal priceToReduce = BigDecimal.valueOf(pricingRule.getDiscount().doubleValue() * scannedItemSummary.getNumberOfItems());
+                                scannedItemSummary.reducePrice(priceToReduce);
                             }
                         }
                     }
                     else if (pricingRule.getApplyCondition().equals(PricingRuleConstants.ApplyCondition.FREE_ITEM)) {
-                        ItemSummary otherBoughtItem = checkoutItems.get(pricingRule.getOtherExistingItemCode());
+                        ScannedItemSummary otherBoughtItem = checkoutItems.get(pricingRule.getOtherExistingItemCode());
                         if(otherBoughtItem != null){
                             BigDecimal amountToReduce;
-                            if(otherBoughtItem.getCount() >= itemSummary.getCount()){
-                                amountToReduce = BigDecimal.valueOf(itemSummary.getCount() * pricingRule.getDiscount().doubleValue());
+                            if(otherBoughtItem.getNumberOfItems() >= scannedItemSummary.getNumberOfItems()){
+                                amountToReduce = BigDecimal.valueOf(scannedItemSummary.getNumberOfItems() * pricingRule.getDiscount().doubleValue());
                             }else{
-                                amountToReduce = BigDecimal.valueOf(otherBoughtItem.getCount() * pricingRule.getDiscount().doubleValue());
+                                amountToReduce = BigDecimal.valueOf(otherBoughtItem.getNumberOfItems() * pricingRule.getDiscount().doubleValue());
                             }
-                            itemSummary.reducePrice(amountToReduce);
+                            scannedItemSummary.reducePrice(amountToReduce);
                       }
                     }
                 }
 
         });
 
+    }
+
+
+    private boolean itemTotalExceedsPricingRuleThreshold(ScannedItemSummary scannedItemSummary, PricingRule pricingRule){
+        return scannedItemSummary.getPriceTotal().compareTo(pricingRule.getPriceThreshold()) >= 0;
+    }
+
+    private boolean pricingRuleDiscountToBeAppliedToTheItemTotal(PricingRule pricingRule){
+        return pricingRule.getDiscountApplyTo().equals(PricingRuleConstants.DiscountApplyTo.FOR_TOTAL);
     }
 }

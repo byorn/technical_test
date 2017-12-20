@@ -12,6 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 
+/**
+ * This Test Suite, focuses on the Checkout total for the items that have been scanned.
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TestCheckoutSystem {
@@ -51,7 +55,8 @@ public class TestCheckoutSystem {
     }
 
 
-    //SKUs Scanned: atv, atv, atv, vga Total expected: $249.00
+    //SKUs Scanned: atv, atv, atv, vga  Total expected: $249.00
+    //Testing PricingRule - if you buy 3 Apple TVs, you will pay the price of 2 only
     @Test
     public void testWhenThreeATVsAndOneVGAScanned() {
 
@@ -68,7 +73,8 @@ public class TestCheckoutSystem {
     }
 
 
-    //SKUs Scanned: atv, ipd, ipd, atv, ipd, ipd, ipd Total expected: $2718.95
+    //SKUs Scanned: atv, ipd, ipd, atv, ipd, ipd, ipd   Total expected: $2718.95
+    //Testing PricingRule - Ipad price will drop to $499.99 each, if someone buys more than 4
     @Test
     public void testWhenTwoATVsFourIPDsScanned() {
 
@@ -85,7 +91,9 @@ public class TestCheckoutSystem {
         Assert.assertEquals(BigDecimal.valueOf(2718.95),checkout.total());
     }
 
-    //SKUs Scanned: mbp, vga  Total expected: $1399.99
+    //SKUs Scanned: mbp, vga    Total expected: $1399.99
+    //Testing PricingRule - Bundle a Free VGA Adapter for Every MacbookPro Scanned
+    //The VGA Adapter will not be charged
     @Test
     public void testWhenOneMBPAndVGAScanned()  {
 
@@ -94,11 +102,12 @@ public class TestCheckoutSystem {
         checkout.scan(ItemPrice.MACBOOK_PRO.getCode(),ItemPrice.MACBOOK_PRO.getPrice());
         checkout.scan(ItemPrice.VGA_ADAPTER.getCode(),ItemPrice.VGA_ADAPTER.getPrice());
 
-
         Assert.assertEquals(BigDecimal.valueOf(1399.99),checkout.total());
     }
 
     //SKUs Scanned: mbp, vga  Total expected: $1399.99
+    //Testing PricingRule - Bundle a Free VGA Adapter for Every MacbookPro Scanned
+    //Customer has to pay for the additional vga scanned if quantity more than MacbookPro's
     @Test
     public void testWhenOneMBPAndTWOVGAScanned()  {
 
@@ -108,10 +117,13 @@ public class TestCheckoutSystem {
         checkout.scan(ItemPrice.VGA_ADAPTER.getCode(),ItemPrice.VGA_ADAPTER.getPrice());
         checkout.scan(ItemPrice.VGA_ADAPTER.getCode(),ItemPrice.VGA_ADAPTER.getPrice());
 
+
         Assert.assertEquals(BigDecimal.valueOf(1429.99),checkout.total());
     }
 
     //SKUs Scanned: mbp, vga  Total expected: $1399.99
+    //Testing PricingRule - Bundle a Free VGA Adapter for Every MacbookPro Scanned
+    //Customer does not need to pay for the vga, and an additional vga will be provided, and this does not effect the total
     @Test
     public void testWhenTwoMBPAndOneVGAScanned()  {
 
@@ -120,7 +132,6 @@ public class TestCheckoutSystem {
         checkout.scan(ItemPrice.MACBOOK_PRO.getCode(),ItemPrice.MACBOOK_PRO.getPrice());
         checkout.scan(ItemPrice.MACBOOK_PRO.getCode(),ItemPrice.MACBOOK_PRO.getPrice());
         checkout.scan(ItemPrice.VGA_ADAPTER.getCode(),ItemPrice.VGA_ADAPTER.getPrice());
-
 
         Assert.assertEquals(BigDecimal.valueOf(2799.98),checkout.total());
     }

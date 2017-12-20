@@ -8,13 +8,22 @@ import java.math.BigDecimal;
 public class PricingRule {
 
 
-
+    /** Apply Pricing Rule To This Item Code **/
     private String itemCode;
+
+    /** The Amount to be Reduced **/
     private BigDecimal discount;
+
+    /** Apply the discount to the Full Total of the scanned Items, or for each individual scanned item i.e.   FOR_TOTAL, PER_ITEM ,**/
     private PricingRuleConstants.DiscountApplyTo discountApplyTo;
+
+    /** Type of 'Exceeds Condition' Pricing Rule -  EXCEEDS_THRESHOLD,  or Type of 'FREE_ITEM' Pricing Rule **/
     private PricingRuleConstants.ApplyCondition  applyCondition;
 
+    /** Apply the pricing rule if the item Total exceeds or equals this price threshold - Requires EXCEEDS_THRESHOLD to be applied**/
     private BigDecimal priceThreshold;
+
+    /** Provide this item free if the other items exists - Requires 'FREE_ITEM' to be applied */
     private String otherExistingItemCode;
 
     public PricingRuleConstants.DiscountApplyTo getDiscountApplyTo() {
